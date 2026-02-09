@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from 'react';
 import Container from '@/components/ui/Container';
-import { funding } from '@/content/site';
+import { exploreFunding as funding } from '@/content/site';
 
 function formatKRW(n: number) {
   return n.toLocaleString('ko-KR') + '원';

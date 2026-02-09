@@ -224,3 +224,5 @@ export const footer = {
       '본 사이트의 콘텐츠는 예시이며, 실제 서비스 및 투자·펀딩과는 무관합니다. 제공되는 정보는 참고용이며, 그에 따른 책임은 지지 않습니다.',
     copyright: '© 2026 GACHI. All rights reserved.',
   };
+
+  export const funding = exploreFunding;
