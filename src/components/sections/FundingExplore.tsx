@@ -14,7 +14,13 @@ export default function FundingExplore() {
   // 로컬 좋아요 토글(나중에 서버 연동 가능)
   const [likedMap, setLikedMap] = useState<Record<string, boolean>>({});
 
-  const items = useMemo(() => funding.items, []);
+  type FundingItem = (typeof funding)[keyof typeof funding][number];
+
+  // `funding`은 카테고리(예: 클래스/프로덕트)별 배열을 가진 객체라서, 화면에서는 하나의 리스트로 펼쳐서 사용
+  const items: FundingItem[] = useMemo(() => {
+    const groups: readonly (readonly FundingItem[])[] = Object.values(funding);
+    return groups.flat();
+  }, []);
 
   const toggleLike = (id: string) => {
     setLikedMap((m) => ({ ...m, [id]: !m[id] }));
@@ -34,8 +40,8 @@ export default function FundingExplore() {
       <Container>
         <div className="flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-semibold tracking-tight">{funding.title}</h2>
-            <p className="mt-2 text-sm text-black/60">{funding.subtitle}</p>
+            <h2 className="text-2xl font-semibold tracking-tight">펀딩 둘러보기</h2>
+            <p className="mt-2 text-sm text-black/60">진행 중인 프로젝트를 한 번에 모아봤어요.</p>
           </div>
 
           <div className="hidden items-center gap-2 md:flex">
@@ -69,9 +75,13 @@ export default function FundingExplore() {
             }}
           >
             {items.map((it, idx) => {
-              const liked = likedMap[it.id] ?? it.liked;
+              const liked = likedMap[it.id] ?? false;
               return (
-                <article className="w-[280px] flex-none sm:w-[320px] snap-start">
+                <article
+                  key={it.id}
+                  data-card={idx === 0 ? '1' : undefined}
+                  className="w-[280px] flex-none sm:w-[320px] snap-start"
+                >
                     {/* image */}
                     <div className="relative overflow-hidden rounded-3xl border border-black/10 bg-white">
                         <a href={it.href}>
